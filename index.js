@@ -10,7 +10,7 @@ const cors = require('cors');
 app.use(express.json());
 
 app.use(cors({
-    // origin:"http://localhost:3000"
+    // origin:"http://localhost:3001"
     origin:"https://transcendent-cocada-c82ed7.netlify.app"
 }))
 
@@ -101,4 +101,4 @@ app.post("/hours/:id",async(req,res)=>{
 })
 
 
-app.listen(process.env.PORT || 3005);
+app.listen(process.env.PORT || 3006);
