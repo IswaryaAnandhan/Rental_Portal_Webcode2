@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(cors({
     // origin:"http://localhost:3000"
-    origin:"https://transcendent-cocada-c82ed7.netlify.app"
+    origin:"https://equipment-rental-portal.netlify.app/"
 }))
 
 app.get("/", function (req, res) {
