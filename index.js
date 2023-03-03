@@ -13,8 +13,8 @@ const mongoclient = new mongodb.MongoClient(URL)
 app.use(express.json());
 
 app.use(cors({
-    // origin:"http://localhost:3000"
-    origin:"https://equipment-rental-portal.netlify.app"
+    origin:"http://localhost:3000"
+    // origin:"https://equipment-rental-portal.netlify.app"
 }))
 
 app.get("/", function (req, res) {
@@ -34,11 +34,11 @@ app.get("/", function (req, res) {
       // Select Collection
       // Do operation (CRUD)
       await db.collection("admin").insertOne(req.body);
-  
-      // Close the connection
-      await connection.close();
-  
+ 
       res.json({ message: "Admin created Sucessfully" });
+
+     // Close the connection
+      await connection.close();
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Something went wrong" });
@@ -105,9 +105,8 @@ app.post("/Products",async(req,res)=>{
         const connection =await mongoclient.connect();
         const db = connection.db(DB);
         const Products =  await db.collection("products").insertOne(req.body);
-        await connection.close();
         res.json(Products);
-
+        await connection.close();
     
     } catch (error) {
         console.log(error);
@@ -119,8 +118,8 @@ app.get("/Products",async(req,res)=>{
         const connection =await mongoclient.connect();
         const db = connection.db(DB);
         const Products =  await db.collection("products").find({}).toArray();
-        await connection.close();
         res.json(Products);
+        await connection.close();
 
     
     } catch (error) {
@@ -138,10 +137,11 @@ app.get("/Products/:id", async (req, res) => {
       .collection("products")
       .findOne({ _id: mongodb.ObjectId(req.params.productId) });
 
-    await connection.close();
+
 
     if (product) {
       res.json(product);
+      await connection.close();
     } else {
       res.status(404).json({ message: "Product not found" });
     }
@@ -162,11 +162,9 @@ app.delete("/Products/:id",async(req,res)=>{
         if (productData) {
             const product = await db
               .collection("products")
-              .deleteOne({ _id: mongodb.ObjectId(req.params.id) });
-  
-            await connection.close();
-      
-            res.json(product);
+              .deleteOne({ _id: mongodb.ObjectId(req.params.id) }); 
+              res.json(product);
+              await connection.close();
           } else {
             res.status(404).json({ message: "Product not found" });
           }
@@ -176,30 +174,29 @@ app.delete("/Products/:id",async(req,res)=>{
         res.json({message:"something Went Wrong"});
     }
 })
-app.get("/ProductsList",async(req,res)=>{
-    try {
-        const connection =await mongoclient.connect();
-        const db = connection.db(DB);
-        const Products =  await db.collection("products").find({}).toArray();
-        await connection.close();
-        res.json(Products);
+// app.get("/ProductsList",async(req,res)=>{
+//     try {
+//         const connection =await mongoclient.connect();
+//         const db = connection.db(DB);
+//         const Products =  await db.collection("products").find({}).toArray();
+//         res.json(Products);
+//         await connection.close();
 
     
-    } catch (error) {
-        console.log(error);
-        res.json({message:"something Went Wrong"});
-    }
-})
+//     } catch (error) {
+//         console.log(error);
+//         res.json({message:"something Went Wrong"});
+//     }
+// })
 
 
 app.get("/Product/:id",async(req,res)=>{
     try {
         const connection =await mongoclient.connect();
         const db = connection.db(DB);
-        const Products =  await db.collection("products").findOne({_id:mongodb.ObjectId(req.params.id)});
-      
+        const Products =  await db.collection("products").findOne({_id:mongodb.ObjectId(req.params.id)}); 
         res.json(Products);
-
+        await connection.close();
     
     } catch (error) {
         console.log(error);
@@ -223,10 +220,8 @@ app.put("/Products/:id", async (req, res) => {
           { _id: mongodb.ObjectId(req.params.id) },
           { $set: req.body }
         );
-
-  
-
       res.json(product);
+      await connection.close();
     } else {
       res.status(404).json({ message: "Product not found" });
     }
@@ -247,9 +242,7 @@ app.post("/hours/:id",async(req,res)=>{
         var date2 = new Date(req.body.endDate);
         var hours = (date2-date1)/(1000*3600);
         res.json(hours)
-      
-        await connection.close();
-    
+        await connection.close();    
     } catch (error) {
         console.log(error);
         res.json({message:"Something Went Wrong"});
