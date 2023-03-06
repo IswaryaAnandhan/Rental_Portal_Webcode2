@@ -13,8 +13,8 @@ const mongoclient = new mongodb.MongoClient(URL)
 app.use(express.json());
 
 app.use(cors({
-    // origin:"http://localhost:3000"
-    origin:"https://equipment-rental-portal.netlify.app"
+    origin:"http://localhost:3000"
+    // origin:"https://equipment-rental-portal.netlify.app"
 }))
 
 app.get("/", function (req, res) {
@@ -223,7 +223,6 @@ app.post("/hours/:id",async(req,res)=>{
         const db = connection.db(DB);
         const Products =  await db.collection("products").findOne({_id:mongodb.ObjectId(req.params.id)});
         var date1 = new Date(req.body.startDate);
-        console.log(req.body.startDate);
         var date2 = new Date(req.body.endDate);
         var hours = (date2-date1)/(1000*3600);
         res.json(hours)
