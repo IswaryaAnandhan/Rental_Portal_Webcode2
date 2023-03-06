@@ -137,8 +137,6 @@ app.get("/Products/:id", async (req, res) => {
       .collection("products")
       .findOne({ _id: mongodb.ObjectId(req.params.productId) });
 
-
-
     if (product) {
       res.json(product);
       await connection.close();
@@ -174,20 +172,7 @@ app.delete("/Products/:id",async(req,res)=>{
         res.json({message:"something Went Wrong"});
     }
 })
-// app.get("/ProductsList",async(req,res)=>{
-//     try {
-//         const connection =await mongoclient.connect();
-//         const db = connection.db(DB);
-//         const Products =  await db.collection("products").find({}).toArray();
-//         res.json(Products);
-//         await connection.close();
 
-    
-//     } catch (error) {
-//         console.log(error);
-//         res.json({message:"something Went Wrong"});
-//     }
-// })
 
 
 app.get("/Product/:id",async(req,res)=>{
